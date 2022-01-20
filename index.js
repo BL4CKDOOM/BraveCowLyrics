@@ -7,11 +7,13 @@
 let braveCowAudio;
 let braveCowOption = {
   isPlayAudio: false,
-  maxDictWords: 1
+  maxDictWords: 3 // 最大单词字数
 };
 
 // 勇敢牛牛词典
 let braveCowDict = [];
+let braveCowDictWeight = [];
+
 
 /**
  * 勇敢牛牛词典 初始数据
@@ -166,6 +168,10 @@ let braveCowDictRaw = [
 $(document).ready(function () {
   initBraveCowAudio();
   initBraveCowDict();
+  if (braveCowDict.length === 0 || braveCowDictWeight[0] < 1) {
+    alert('初始化词典失败');
+    return false;
+  }
   // 勇敢牛牛音频播放及暂停
   $("#playBraveCowBtn").click(function () {
     if (braveCowOption.isPlayAudio) {
@@ -192,9 +198,26 @@ function playBraveCowAudio() {
   braveCowAudio.play();
 }
 
-// 初始化勇敢牛牛词典
+// 初始化勇敢牛牛词典及权重列表
 function initBraveCowDict() {
-
+  let maxDictWords = braveCowOption.maxDictWords;
+  for (let i = 0; i < maxDictWords; i++) {
+    braveCowDict.push([]);
+    braveCowDictWeight.push([]);
+  }
+  for (let i = 0; i < braveCowDictRaw.length; i++) {
+    let weight = braveCowDictRaw[i].weight;
+    let words = braveCowDictRaw[i].words;
+    if (words > maxDictWords) {
+      alert('最大单词字数配置错误');
+      return false;
+    }
+    for (let j = words - 1; j < maxDictWords; j++) {
+      braveCowDict[j].push(braveCowDictRaw[i]);
+      let totalWeight = braveCowDictWeight[j].length > 0 ? braveCowDictWeight[j][braveCowDictWeight[j].length - 1] + weight : weight;
+      braveCowDictWeight[j].push(totalWeight);
+    }
+  }
 }
 
 // 勇敢填词，根据字数返回对应字数的随机内容
