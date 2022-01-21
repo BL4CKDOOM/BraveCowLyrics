@@ -33,17 +33,24 @@
           <textarea id="braveCowTextareaLeft" placeholder="原内容" class="form-control" rows="15"></textarea>
         </div>
         <div class="col-md-2" style="text-align: center;">
-          <button id="braveCowTransBtn" class="btn btn-default">转换</button><br><br>
-          <button id="braveCowFillABtn" class="btn btn-default">填1字</button>
-          <button id="braveCowFillBBtn" class="btn btn-default">填2字</button><br><br>
-          <button id="braveCowFillCBtn" class="btn btn-default">填3字</button>
-          <button id="braveCowFillDBtn" class="btn btn-default">填4字</button><br><br>
-          <button id="braveCowFillEBtn" class="btn btn-default">填5字</button>
-          <button id="braveCowFillFBtn" class="btn btn-default">填6字</button><br><br>
-          <button id="braveCowFillGBtn" class="btn btn-default">填7字</button>
-          <button id="braveCowFillHBtn" class="btn btn-default">填8字</button><br><br>
+          <select class="form-control" id="braveCowPhonetic">
+            <option value="0">输出汉字</option>
+            <option value="1">输出拼音</option>
+          </select><br>
+          <button id="braveCowTransBtn" class="btn btn-default">转换</button>
+          <br><br>
+          <button data-num="2" class="brave-cow-fill-btn btn btn-default">填2字</button>
+          <button data-num="3" class="brave-cow-fill-btn btn btn-default">填3字</button>
+          <br><br>
+          <button data-num="4" class="brave-cow-fill-btn btn btn-default">填4字</button>
+          <button data-num="5" class="brave-cow-fill-btn btn btn-default">填5字</button>
+          <br><br>
+          <button data-num="6" class="brave-cow-fill-btn btn btn-default">填6字</button>
+          <button data-num="7" class="brave-cow-fill-btn btn btn-default">填7字</button>
+          <br><br>
           <input id="braveCowFillNum" type="number" style="width: 60px;" max="200" maxlength="3">
-          <button id="braveCowFillNumBtn" class="btn btn-default">填字</button><br><br>
+          <button id="braveCowFillNumBtn" class="btn btn-default">填字</button>
+          <br><br>
         </div>
         <div class="col-md-5">
           <textarea id="braveCowTextareaRight" placeholder="输出内容" class="form-control" rows="15"></textarea>

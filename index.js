@@ -3,8 +3,10 @@
  * @Author Black Doom
  * @Version 0.0
  */
-
-let braveCowAudio;
+let braveCowAudio; // 勇敢牛牛音频
+let $braveCowTextareaLeft;
+let $braveCowTextareaRight;
+let $braveCowPhonetic;
 let braveCowOption = {
   isPlayAudio: false,
   maxDictWords: 3 // 最大单词字数
@@ -14,26 +16,25 @@ let braveCowOption = {
 let braveCowDict = [];
 let braveCowDictWeight = [];
 
-
 /**
  * 勇敢牛牛词典 初始数据
  * 参数 name: 中文, words: 字数, weight: 权重,
  * phonetic: 拼音，一字的为实际拼音，超过两字的为根据一字强行转化来，比如抵用(di3yong4)为第(di4)+勇(yong3)活字印刷，实际为(di4yong3)
  */
 let braveCowDictRaw = [
-  {name: '第', words: 1, weight: 20, phonetic: 'di4'},
-  {name: '一', words: 1, weight: 20, phonetic: 'yi1'},
-  {name: '次', words: 1, weight: 20, phonetic: 'ci4'},
-  {name: '勇', words: 1, weight: 20, phonetic: 'yong3'},
-  {name: '敢', words: 1, weight: 20, phonetic: 'gan3'},
-  {name: '牛', words: 1, weight: 20, phonetic: 'niu2'},
-  {name: '不', words: 1, weight: 20, phonetic: 'bu2'},
-  {name: '怕', words: 1, weight: 20, phonetic: 'pa4'},
-  {name: '困', words: 1, weight: 20, phonetic: 'kun4'},
-  {name: '难', words: 1, weight: 20, phonetic: 'nan2'},
-  {name: '二', words: 1, weight: 20, phonetic: 'er4'},
-  {name: '终', words: 1, weight: 20, phonetic: 'zhong1'},
-  {name: '级', words: 1, weight: 20, phonetic: 'ji2'},
+  // {name: '第', words: 1, weight: 5, phonetic: 'di4'},
+  // {name: '一', words: 1, weight: 5, phonetic: 'yi1'},
+  // {name: '次', words: 1, weight: 5, phonetic: 'ci4'},
+  // {name: '勇', words: 1, weight: 5, phonetic: 'yong3'},
+  // {name: '敢', words: 1, weight: 5, phonetic: 'gan3'},
+  {name: '牛', words: 1, weight: 10, phonetic: 'niu2'},
+  // {name: '不', words: 1, weight: 5, phonetic: 'bu2'},
+  // {name: '怕', words: 1, weight: 5, phonetic: 'pa4'},
+  // {name: '困', words: 1, weight: 5, phonetic: 'kun4'},
+  // {name: '难', words: 1, weight: 5, phonetic: 'nan2'},
+  // {name: '二', words: 1, weight: 5, phonetic: 'er4'},
+  // {name: '终', words: 1, weight: 5, phonetic: 'zhong1'},
+  // {name: '级', words: 1, weight: 5, phonetic: 'ji2'},
   {name: '弟弟', words: 2, weight: 10, phonetic: 'di4di4'},
   {name: '地底', words: 2, weight: 10, phonetic: 'di4di4'},
   {name: '第一', words: 2, weight: 10, phonetic: 'di4yi1'},
@@ -54,8 +55,8 @@ let braveCowDictRaw = [
   {name: '异次', words: 2, weight: 10, phonetic: 'yi1ci4'},
   {name: '医用', words: 2, weight: 10, phonetic: 'yi1yong3'},
   {name: '易用', words: 2, weight: 10, phonetic: 'yi1yong3'},
-  {name: '已用', words: 2, weight: 10, phonetic: 'yi1yong3'},
-  {name: '义勇', words: 2, weight: 10, phonetic: 'yi1yong3'},
+  // {name: '已用', words: 2, weight: 10, phonetic: 'yi1yong3'},
+  // {name: '义勇', words: 2, weight: 10, phonetic: 'yi1yong3'},
   {name: '一部', words: 2, weight: 10, phonetic: 'yi1bu2'},
   {name: '一步', words: 2, weight: 10, phonetic: 'yi1bu2'},
   {name: '一种', words: 2, weight: 10, phonetic: 'yi1zhong1'},
@@ -78,22 +79,23 @@ let braveCowDictRaw = [
   {name: '用意', words: 2, weight: 10, phonetic: 'yong3yi1'},
   {name: '泳衣', words: 2, weight: 10, phonetic: 'yong3yi1'},
   {name: '庸医', words: 2, weight: 10, phonetic: 'yong3yi1'},
+  {name: '勇敢', words: 2, weight: 100, phonetic: 'yong3gan3'},
   {name: '拥挤', words: 2, weight: 10, phonetic: 'yong3ji2'},
   {name: '用词', words: 2, weight: 10, phonetic: 'yong3ci4'},
   {name: '用用', words: 2, weight: 10, phonetic: 'yong3yong3'},
   {name: '永不', words: 2, weight: 10, phonetic: 'yong3bu2'},
   {name: '肝帝', words: 2, weight: 10, phonetic: 'gan3di4'},
   {name: '敢用', words: 2, weight: 10, phonetic: 'gan3yong3'},
-  {name: '赶赶', words: 2, weight: 10, phonetic: 'gan3gan3'},
+  // {name: '赶赶', words: 2, weight: 10, phonetic: 'gan3gan3'},
   {name: '敢干', words: 2, weight: 10, phonetic: 'gan3gan3'},
   {name: '赶牛', words: 2, weight: 10, phonetic: 'gan3niu2'},
   {name: '干部', words: 2, weight: 10, phonetic: 'gan3bu2'},
   {name: '干趴', words: 2, weight: 10, phonetic: 'gan3pa4'},
-  {name: '赣南', words: 2, weight: 10, phonetic: 'gan3nan2'},
+  // {name: '赣南', words: 2, weight: 10, phonetic: 'gan3nan2'},
   {name: '感激', words: 2, weight: 10, phonetic: 'gan3ji2'},
   {name: '赶集', words: 2, weight: 10, phonetic: 'gan3ji2'},
   {name: '牛肝', words: 2, weight: 10, phonetic: 'niu2gan3'},
-  {name: '牛牛', words: 2, weight: 10, phonetic: 'niu2niu2'},
+  {name: '牛牛', words: 2, weight: 100, phonetic: 'niu2niu2'},
   {name: '妞妞', words: 2, weight: 10, phonetic: 'niu2niu2'},
   {name: '扭扭', words: 2, weight: 10, phonetic: 'niu2niu2'},
   {name: '牛腩', words: 2, weight: 10, phonetic: 'niu2nan2'},
@@ -108,17 +110,17 @@ let braveCowDictRaw = [
   {name: '不用', words: 2, weight: 10, phonetic: 'bu2yong3'},
   {name: '不敢', words: 2, weight: 10, phonetic: 'bu2gan3'},
   {name: '不牛', words: 2, weight: 10, phonetic: 'bu2niu2'},
-  {name: '不怕', words: 2, weight: 10, phonetic: 'bu2pa4'},
+  {name: '不怕', words: 2, weight: 50, phonetic: 'bu2pa4'},
   {name: '不困', words: 2, weight: 10, phonetic: 'bu2kun4'},
   {name: '不难', words: 2, weight: 10, phonetic: 'bu2nan2'},
   {name: '趴地', words: 2, weight: 10, phonetic: 'pa4di4'},
   {name: '爬竿', words: 2, weight: 10, phonetic: 'pa4gan3'},
   {name: '怕怕', words: 2, weight: 10, phonetic: 'pa4pa4'},
-  {name: '爬爬', words: 2, weight: 10, phonetic: 'pa4pa4'},
+  // {name: '爬爬', words: 2, weight: 10, phonetic: 'pa4pa4'},
   {name: '扒鸡', words: 2, weight: 10, phonetic: 'pa4ji2'},
   {name: '帕吉', words: 2, weight: 10, phonetic: 'pa4ji2'},
   {name: '困意', words: 2, weight: 10, phonetic: 'kun4yi1'},
-  {name: '困难', words: 2, weight: 10, phonetic: 'kun4nan2'},
+  {name: '困难', words: 2, weight: 50, phonetic: 'kun4nan2'},
   {name: '男佣', words: 2, weight: 10, phonetic: 'nan2yong3'},
   {name: '难干', words: 2, weight: 10, phonetic: 'nan2gan3'},
   {name: '男男', words: 2, weight: 10, phonetic: 'nan2nan2'},
@@ -133,7 +135,7 @@ let braveCowDictRaw = [
   {name: '重用', words: 2, weight: 10, phonetic: 'zhong1yong3'},
   {name: '中部', words: 2, weight: 10, phonetic: 'zhong1bu2'},
   {name: '中级', words: 2, weight: 10, phonetic: 'zhong1ji2'},
-  {name: '终极', words: 2, weight: 10, phonetic: 'zhong1ji2'},
+  {name: '终极', words: 2, weight: 50, phonetic: 'zhong1ji2'},
   {name: '重疾', words: 2, weight: 10, phonetic: 'zhong1ji2'},
   {name: '重击', words: 2, weight: 10, phonetic: 'zhong1ji2'},
   {name: '基地', words: 2, weight: 10, phonetic: 'ji2di4'},
@@ -148,7 +150,7 @@ let braveCowDictRaw = [
   {name: '济南', words: 2, weight: 10, phonetic: 'ji2nan2'},
   {name: '集中', words: 2, weight: 10, phonetic: 'ji2niu2'},
   {name: '积极', words: 2, weight: 10, phonetic: 'ji2ji2'},
-  {name: '第一次', words: 3, weight: 10, phonetic: 'di4yi1ci4'},
+  {name: '第一次', words: 3, weight: 100, phonetic: 'di4yi1ci4'},
   {name: '第一牛', words: 3, weight: 10, phonetic: 'di4yi1niu2'},
   {name: '第一种', words: 3, weight: 10, phonetic: 'di4yi1zhong1'},
   {name: '第一季', words: 3, weight: 10, phonetic: 'di4yi1ji2'},
@@ -166,6 +168,58 @@ let braveCowDictRaw = [
 ];
 
 $(document).ready(function () {
+  let leftText = "天涯的尽头 有谁去过\n" +
+      "山水优雅着 保持沉默\n" +
+      "我们的青春却热闹很多\n" +
+      "而且是谁都 不准偷\n" +
+      "故事怎么写 才像小说\n" +
+      "真实的伤口 从不回收\n" +
+      "跟着马蹄进入江湖的我\n" +
+      "有一些话想 对你说\n" +
+      "传说的世界 有你相陪\n" +
+      "双向的穿越 每一场风雪\n" +
+      "红尘我不累 天涯我不追\n" +
+      "彼此的了解不只一些 耶\n" +
+      "传说的世界 有你相陪\n" +
+      "双向的对决 距离不是一切\n" +
+      "什么是撤退 我们不会写\n" +
+      "突破了黑夜永不凋谢\n" +
+      "青石板街头 岁月悠悠\n" +
+      "远处是霓虹 还是烛火\n" +
+      "这画面在更新可能都有\n" +
+      "一起将梦想 都打勾\n" +
+      "琴声在枝头 风来就走\n" +
+      "追梦的时候 不能逐流\n" +
+      "逆向的温柔给了你就走\n" +
+      "而你的生活 都有我\n" +
+      "传说的世界 有你相陪\n" +
+      "双向的穿越 每一场风雪\n" +
+      "红尘我不累 天涯我不追\n" +
+      "彼此的了解不只一些 耶\n" +
+      "传说的世界 有你相陪\n" +
+      "双向的对决 距离不是一切\n" +
+      "什么是撤退 我们不会写\n" +
+      "突破了黑夜永不凋谢\n" +
+      "风声很轻 谁在安静\n" +
+      "谁在寻找知音 (穿越竹林)\n" +
+      "谁在聆听 远处古琴\n" +
+      "谁的弦绷太紧 (想解释命运)\n" +
+      "不再飘零 不再任性\n" +
+      "我们都答应\n" +
+      "我们也都相信\n" +
+      "一起走过 古风的边境\n" +
+      "传说的世界 有你相陪\n" +
+      "双向的穿越 每一场风雪\n" +
+      "红尘我不累 天涯我不追\n" +
+      "彼此的了解不只一些 耶\n" +
+      "传说的世界 有你相陪\n" +
+      "双向的对决 距离不是一切\n" +
+      "什么是撤退 我们不会写\n" +
+      "突破了黑夜永不凋谢";
+  $("#braveCowTextareaLeft").val(leftText);
+  $braveCowTextareaLeft = $("#braveCowTextareaLeft");
+  $braveCowTextareaRight = $("#braveCowTextareaRight");
+  $braveCowPhonetic = $("#braveCowPhonetic");
   initBraveCowAudio();
   initBraveCowDict();
   if (braveCowDict.length === 0 || braveCowDictWeight[0] < 1) {
@@ -183,6 +237,26 @@ $(document).ready(function () {
       $("#playBraveCowBtn").addClass('brave-cow-playing');
       braveCowAudio.play();
     }
+  });
+  $("#braveCowFillNumBtn").click(function () {
+    let fillNum = $("#braveCowFillNum").val();
+    if (fillNum < 1) {
+      alert("请填写正整数字数");
+      return false;
+    }
+    let phonetic = $braveCowPhonetic.val() === "1" ? true : false;
+    fillLyricsWithWords(fillNum, phonetic);
+  });
+  $(".brave-cow-fill-btn").click(function () {
+    let dataNum = Number($(this).attr('data-num'));
+    if (!isNaN(dataNum)) {
+      let phonetic = $braveCowPhonetic.val() === "1" ? true : false;
+      fillLyricsWithWords(dataNum, phonetic);
+    }
+  });
+  $("#braveCowTransBtn").click(function () {
+    let phonetic = $braveCowPhonetic.val() === "1" ? true : false;
+    braveCowTrans(phonetic);
   });
 })
 
@@ -220,8 +294,41 @@ function initBraveCowDict() {
   }
 }
 
+// 勇敢填词，一键替换原来的词
+function braveCowTrans(phonetic) {
+  let chineseReg = /[\u4e00-\u9fa5]{1,}/g;
+  let textLeft = $("#braveCowTextareaLeft").val();
+  if (textLeft === "") {
+    return false;
+  }
+  let leftTextOriList = textLeft.split('\n');
+  let rightTextList = [];
+  for (let i = 0; i < leftTextOriList.length; i++) {
+    let curLine = $.trim(leftTextOriList[i]);
+    let chnLeftList = curLine.match(chineseReg);
+    if (!chnLeftList) {
+      rightTextList.push(curLine);
+      continue;
+    }
+    let curLineList = [];
+    for (let j = 0; j < chnLeftList.length; j++) {
+      let thisWords = getBraveCowLyrics(chnLeftList[j].length, phonetic);
+      curLineList.push(thisWords);
+    }
+    rightTextList.push(curLineList.join(" "));
+  }
+  let textRight = rightTextList.join("\n");
+  let textRightOri = $braveCowTextareaRight.val();
+  $braveCowTextareaRight.val(textRight);
+  // if (textRightOri === "") {
+  //   $braveCowTextareaRight.val(textRight);
+  // } else {
+  //   $braveCowTextareaRight.val(textRightOri + "\n" + textRight);
+  // }
+}
+
 // 勇敢填词，根据字数返回对应字数的随机内容
-function getBraveCowLyrics(wordsNum) {
+function getBraveCowLyrics(wordsNum, phonetic) {
   wordsNum = Number(wordsNum);
   if (isNaN(wordsNum) || wordsNum < 1) {
     return "";
@@ -229,10 +336,34 @@ function getBraveCowLyrics(wordsNum) {
   let braveCowLyrics = "";
   if (wordsNum > braveCowOption.maxDictWords) {
     let smallerNum = Math.ceil(Math.random() * braveCowOption.maxDictWords);
-    braveCowLyrics += getBraveCowLyrics(smallerNum);
-    braveCowLyrics += getBraveCowLyrics(wordsNum - smallerNum);
+    braveCowLyrics += getBraveCowLyrics(smallerNum, phonetic);
+    braveCowLyrics += getBraveCowLyrics(wordsNum - smallerNum, phonetic);
   } else {
-
+    let randomDict = braveCowDict[wordsNum - 1];
+    let randomDictWeight = braveCowDictWeight[wordsNum - 1];
+    let dictLength = randomDict.length;
+    let maxIndex = randomDictWeight[dictLength - 1];
+    let randomNum = Math.ceil(Math.random() * maxIndex);
+    for (let i = 0; i < dictLength; i++) {
+      let curWeight = randomDictWeight[i];
+      if (randomNum <= curWeight) {
+        let name = phonetic ? randomDict[i].phonetic : randomDict[i].name;
+        let words = randomDict[i].words;
+        if (words === wordsNum) {
+          return name;
+        } else {
+          return name + getBraveCowLyrics(wordsNum - words, phonetic);
+        }
+      }
+    }
   }
   return braveCowLyrics;
+}
+
+// 获取指定字数的填词并填入文本区域中
+function fillLyricsWithWords(fillNum) {
+  let fillLyrics = getBraveCowLyrics(fillNum);
+  // console.log(fillLyrics.length);
+  let curText = $braveCowTextareaRight.val();
+  $braveCowTextareaRight.val(curText + fillLyrics);
 }
